@@ -1,0 +1,35 @@
+安装MySQL:
+
+安装前在安装目录下新建my.ini配置文件：
+以下目录为例：D:\soft\mysql-8.0.13-winx64\mysql-8.0.13-winx64\my.ini
+
+[mysqld]
+# 设置3306端口
+port=3306
+# 设置mysql的安装目录
+basedir=C:\Program Files\MySQL
+# 设置mysql数据库的数据的存放目录
+datadir=C:\Program Files\MySQL\Data
+# 允许最大连接数
+max_connections=200
+# 允许连接失败的次数。
+max_connect_errors=10
+# 服务端使用的字符集默认为utf8mb4
+character-set-server=utf8mb4
+# 创建新表时将使用的默认存储引擎
+default-storage-engine=INNODB
+# 默认使用“mysql_native_password”插件认证
+#mysql_native_password
+default_authentication_plugin=mysql_native_password
+[mysql]
+# 设置mysql客户端默认字符集
+default-character-set=utf8mb4
+[client]
+# 设置mysql客户端连接服务端时默认使用的端口
+port=3306
+default-character-set=utf8mb4
+
+1.以管理员身份CMD进入MySQL安装目录下的bin目录下执行：D:\soft\mysql-8.0.13-winx64\mysql-8.0.13-winx64\bin\mysqld --initialize --console
+2.root @ localhost后为系统自动生成的密码,暂记下一会儿登陆需要用到。
+3.安装mysql服务：D:\soft\mysql-8.0.13-winx64\mysql-8.0.13-winx64\bin\mysqld --install [服务名]  服务名可不填。
+4.启动服务：D:\soft\mysql-8.0.13-winx64\mysql-8.0.13-winx64\bin\net start mysql

@@ -1,0 +1,1 @@
+在eclipse里启动tomcat的时候出现以下的错误： Server Tomcat v6.0 at localhost was unable to start within 45 seconds. If the server requires more time, try increasing the timeout in the server editor. 我找遍了eclipse的设置也没找到增加timeout的地方，后来发现秘密在这里： 在servers view里，双击你要设置的server，会打开该server的设置窗口，在右上部有Timeouts的设置部分，设置timeout就在这里了，

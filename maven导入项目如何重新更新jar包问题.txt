@@ -1,0 +1,7 @@
+在开发的过程中，尤其是新手，我们经常遇到Maven下载依赖jar包的问题，也就是遇到“Failed to read artifact descriptor for xxx:jar”的错误。。
+
+Description	Resource	Path	Location	Type
+Project build error: Non-resolvable parent POM for com.cctv.portal.cloud.portal:cloud-portal-baby-vote:0.0.1-SNAPSHOT: Failure to transfer org.springframework.boot:spring-boot-starter-parent:pom:1.5.12.RELEASE from http://maven.aliyun.com/nexus/content/repositories/central/ was cached in the local repository, resolution will not be reattempted until the update interval of alimaven has elapsed or updates are forced. Original error: Could not transfer artifact org.springframework.boot:spring-boot-starter-parent:pom:1.5.12.RELEASE from/to alimaven (http://maven.aliyun.com/nexus/content/repositories/central/): connect timed out and 'parent.relativePath' points at no local POM	pom.xml	/cloud-portal-baby-vote	line 14	Maven pom Loading Problem
+
+
+1）要么就是，删除仓库内对应依赖的文件夹,右单击项目，Maven->Update Project，在弹出的对话框中选择“Force Update Of Snapshots/Releases",然后点击“OK”。这样就会重新下载这个jar包。

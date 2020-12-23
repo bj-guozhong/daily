@@ -1,0 +1,20 @@
+Could not calculate build plan: Plugin org.apache.maven.plugins:maven-resources-plugin:2.7 or one of its dependencies could not be resolved: Failed to read artifact descriptor for org.apache.maven.plugins:maven-resources-plugin:jar:2.7
+Plugin org.apache.maven.plugins:maven-resources-plugin:2.7 or one of its dependencies could not be resolved: Failed to read artifact descriptor for org.apache.maven.plugins:maven-resources-plugin:jar:2.7
+
+创建、更新Maven项目报错Could not calculate build plan: Plugin org.apache.maven.plugins:maven-resources-plugin:2.7的解决办法
+
+a.打开本地maven仓库目录，进入org\apache\maven目录，形如：D:\soft\maven\org\apache\maven
+
+然后搜索关键字：“lastUpdated”，
+
+将搜索到的“xxx.lastUpdated”文件(类型lastUpdated文件)全都删掉,不要删xxx.lastUpdated.properties的文件。
+
+b.再次更新maven项目，ok
+
+
+
+
+第二个类似的问题：Failure to transfer org.apache.maven.plugins:maven-surefire-plugin:pom:2.18.1
+
+同样搜索搜索关键字：“surefire*lastUpdated”，然后找到带2.18.1的lastUpdated文件删除，再重新更新项目，OK。
+
