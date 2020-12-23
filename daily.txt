@@ -1,0 +1,6 @@
+常用的一些小事件
+
+1.页面禁止右键，这个算不上JS方法：
+<body id="bid" oncontextmenu="return false" onselectstart="return false" oncopy = "return false">
+
+
