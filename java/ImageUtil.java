@@ -1,4 +1,4 @@
-package com.cctv.portal.video.utils;
+package com.gz.portal.video.utils;
 
 import java.util.Random;
 import java.awt.image.BufferedImage;
