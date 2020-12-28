@@ -1,0 +1,119 @@
+1. 视频文件简单转换成另一个格式的视频文件, 会默认使用H264编码格式输出视频文件.
+   ffmpeg -i input.avi output.mkv
+
+2. 把一个视频文件my.avi和一个声音文件my.mp3合并成一个音视频文件my.mkv 
+   ffmpeg –i my.avi –i my.mp3 –vcodec copy –acodec copy my.mkv
+
+
+3. 把音视频文件my.mkv里的声音数据去掉生成只有图像的my.avi文件, 并使用h264编码
+   ffmpeg -i my.mkv -vcodec h264 -an my.avi
+
+4. 把音视频文件my.mkv里的图像数据去掉生成只有声音的my.aac文件, 并使用aac编码
+   ffmpeg -i my.mkv -acodec aac -vn my.aac
+
+5. 把多个图像文件使用h264编码封装成avi文件，如有my0.jpg, my1.jpg ... my99.jpg
+   ffmpeg -i my%d.jpg  -vcodec h264 my.avi
+
+6. 指定音视频文件把1分30秒到5分20秒的内容输出到另一个文件
+   ffmpeg -ss 00:01:30 -i my.avi -to 00:05:20 -vcodec copy -acodec copy my.mkv
+
+7. 把视频文件里内容输出成多张图像
+   ffmpeg -i my2.avi -r 1 -f image2  my%d.jpg
+
+   只输出一张图像
+   ffmpeg -i my2.avi -r 1 -f image2 -t 0.0001 my%d.jpg
+
+8. 从音视频文件里生成yuyv422格式的数据
+   ffmpeg -i 99bear.mp4  -r 1 -f rawvideo -pix_fmt yuyv422 my.yuyv
+
+   //yuv数据可用ffplay来播放
+   ffplay -f rawvideo -video_size 640x480 -pixel_format yuyv422 my.yuyv 
+
+
+9. 改变原视频文件的分辨率大小为640x480, 使用h264编码, 声音使用aac编码, 并指定视频输出的码率为100k.
+   ffmpeg -i 78.flv -vcodec h264 -acodec aac -s 640x480 -b:v 100k 78.avi
+
+10. 指定把视频文件里在第500秒开始30帧图像数据保存为gif, 指定一秒2张图像的速率
+    ffmpeg -ss 500 -r 2 -i 99bear.mp4 -vframes 30 my.gif
+
+
+11. 合并多个同格式的视频文件. 如把"1.flv  2.flv  3.flv"三个文件合并为my.avi
+    先创建一个文本文件files.txt, 里面记录要合并的文件名:
+    files.txt：
+	    file '1.flv'
+	    file '2.flv'
+    	    file '3.flv'
+    然后：
+          ffmpeg -f concat -i files.txt -vcodec copy -acodec copy my.avi
+
+
+12. 视频文件增加logo.
+	  ffmpeg -i God.rm -i logo.png -filter_complex overlay my.avi
+    
+    指定logo的位置, overlay=logo在视频里开始显示的x坐标:y坐标. 可以用变量W/w, H/h来表示, W表示视频图像的宽度 H表示视频图像的高度, w表示logo的宽度, h表示logo的高度
+  
+    如右下角: ffmpeg -i God.rm -i logo.png -filter_complex overlay=W-w:H-h my.avi
+    如居中:  ffmpeg -i God.rm -i logo.png -filter_complex overlay=W/2-w/2:H/2-h/2 my.avi
+
+
+13. 操作摄像头.
+    查看摄像头所支持的数据格式及分辨率:
+    ffmpeg -f v4l2 -list_formats all -i /dev/video0
+    
+    录制10秒摄像头里的内容, 并指定帧率为10和使用h264编码:
+    ffmpeg -t 10 -f v4l2 -r 10 -i /dev/video0  -vcodec h264 ./a.avi
+
+    录制摄像头的内容为gif，并指定分辨率及帧率:
+    ffmpeg -f v4l2 -video_size 320x240 -r 2 -i /dev/video0  o.gif
+
+
+14. 操作声卡, 录音10秒并使用aac编码:
+    ffmpeg -t 10 -f alsa -i default -acodec aac my.aac	
+
+    录音10秒保存为wav文件:
+    ffmpeg -t 10 -f alsa -i default my.wav
+
+15. 录屏，指定录制的分辨率及帧率， 并使用h264编码:
+    ffmpeg -f x11grab -video_size 1024x768 -r 10 -i :0 -vcodec h264 ./a.avi
+
+    录屏，并指定从屏幕的坐标10:20开始区域录制:
+    ffmpeg -f x11grab -video_size 800x600 -r 5 -i :0.0+10,20 -vcodec h264 ./b.avi
+
+    录屏并录制声音:
+    ffmpeg -f x11grab -r 5 -i :0 -f alsa -i default -vcodec h264 -acodec aac my.avi
+
+---------------------------------------------------
+2).ffmpeg -y -i d:\cars.mp4 -vf "fps=1/5,scale=iw/2:-1,tile=5x5" -an %d.png
+
+fps=1/2：每2秒截一张图，如果是每秒截一张的话应该是fps=1
+
+scale：所截图片大小，上面的代码是设置宽为原始的1/4大小，高度自动，相当于iw/4:ih/4，也可以设置成固定值如120:80
+
+tile：网格化，自动将100张图合并成一张大图
+
+3).ffmpeg -ss 25 -t 3 -i d:\cars.mp4 -f gif D:\image\GIF\s.gif
+
+从d:\cars.mp4从第25秒的位置开始，截取5秒长度的视频转成GIF文件，保存为D:\a.gif。
+
+你的源文件可能是1080P的高清视频，帧率可能还比较高。为了便于网络分享，GIF文件最好小一点。于是，我们需要使用-s参数来进行图像的缩放，使用-r参数来限制目标文件的帧率。命令行如下：
+
+ffmpeg -ss 25 -t 10 -i d:\cars.mp4 -s 320x240 -f gif -r 1 D:\b.gif
+
+截取视频内任意时间点（比如第16.1秒处）的一帧图像保存为JPEG文件：
+ffmpeg -ss 25 -t 10 -i d:\cars.mp4 -r 1 -s 320x240 -f image2 D:\foo-%03d.jpeg
+
+从源视频中每秒钟抽取一帧图像，保存为一系列JPEG文件。然后，再执行
+ffmpeg -f image2 -framerate 5 -i D:\foo-%03d.jpeg D:\c.gif
+
+，将这一系列JPEG图像合成为帧率5 fps的GIF文件。Bingo!
+
+
+ffmpeg截取视频中的一段视频命令为：
+ffmpeg  -i d:\cars.mp4 -vcodec copy -acodec copy -ss 00:00:10 -to 00:00:20 d:\cars_cut.mp4 -y
+
+------------------------------GIF 高清一些--------------------------------------
+
+ffmpeg -i d:\bb.mp4 -vf fps=30,scale=-1:-1::flags=lanczos,palettegen d:\palette.png
+ffmpeg -ss 8 -t 5 -i d:\aa.mp4 -i d:\palette.png -filter_complex "fps=30,scale=320:-1:flags=lanczos[x];[x][1:v]paletteuse"  -s 250x520 -r 15 d:\\aa.gif
+
+pause
