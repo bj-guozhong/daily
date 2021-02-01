@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>关于节目生产系统服务器停机升级公告</title>
+
+<script type="text/javascript">
+	var url = getParam("url");
+	var t = 15;//设定跳转的时间
+	
+	//设定在某段时间内执行以下跳转，否则不需要倒计时直接跳转，比如2021.1.22 23:00 至2021.1.23 08:00
+	var starttime = dateFtt('yyyy-MM-dd',new Date(Date.parse("2021-01-26")));
+	var endtime = dateFtt('yyyy-MM-dd',new Date(Date.parse("2021-01-29")));
+	
+	//获取当前时间，
+	var myDate = new Date();
+	var hour = myDate.getHours();//得到小时
+	var sysdate = dateFtt('yyyy-MM-dd',myDate);
+	
+	//console.log("-------------date:"+dateFtt('yyyy-MM-dd',myDate)+"--starttime:"+starttime+"---endtime:"+endtime);
+	if(sysdate>=starttime && sysdate<=endtime){
+		//console.log("-------------hour:"+hour);
+		if(hour>=23 || hour<18){
+			//console.log("-------------1");
+			var timer =setInterval("refer()", 1000); //启动1秒定时
+			function refer() {
+				if (t == 0) {
+					clearInterval(timer);
+					location = "http://eipapp.cctv.com?number="+Math.random(); //#设定跳转的链接地址
+				}
+				document.getElementById('Content').innerHTML = "尊敬的用户，<b>节目生产管理系统于 2021年1月22日23时 至 2021年1月23日8时 停机升级维护</b>，在此期间系统暂停服务，如出现临时播出编排任务或播出信息变更，请及时启动应急流程。</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在升级切换期间及切换完成后，如有技术问题请联系节目生产管理系统现场值班人员或拨打值班电话：68506562（复兴路办公区方楼5层A506）85068074（光华路办公区8层133室）。</br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;给您工作带来的不便敬请谅解。"; // 显示倒计时
+				document.getElementById('Time').innerHTML = "" + t + "秒后跳转...";
+				t--;
+			}
+		}
+		else{
+			//console.log("-------------2");
+			location = location = "http://eip.cctv.com?number="+Math.random();; //#设定跳转的链接地址
+		}
+	}
+	else{
+		//console.log("-------------3");
+		location = location = "http://eip.cctv.com?number="+Math.random();; //#设定跳转的链接地址
+	}
+
+	/**
+	 * 获取指定的URL参数值
+	 * URL:http://cmscorp.cctv.com/portal-page/jmgl/index.html?url=http://eip.cctv.com
+	 * 参数：paramName URL参数
+	 * 调用方法:getParam("name")
+	 * 返回值:tyler
+	 */
+	function getParam(paramName) {
+	    paramValue = "", isFound = !1;
+	    if (this.location.search.indexOf("?") == 0 && this.location.search.indexOf("=") > 1) {
+	        arrSource = unescape(this.location.search).substring(1, this.location.search.length).split("&"), i = 0;
+	        while (i < arrSource.length && !isFound) arrSource[i].indexOf("=") > 0 && arrSource[i].split("=")[0].toLowerCase() == paramName.toLowerCase() && (paramValue = arrSource[i].split("=")[1], isFound = !0), i++
+	    }
+	    return paramValue == "" && (paramValue = null), paramValue
+	}
+	 
+	 function dateFtt(fmt, date) { //author: meizz   
+			var o = {
+				"M+": date.getMonth() + 1, //月份   
+				"d+": date.getDate(), //日   
+				"h+": date.getHours(), //小时   
+				"m+": date.getMinutes(), //分   
+				"s+": date.getSeconds(), //秒   
+				"q+": Math.floor((date.getMonth() + 3) / 3), //季度   
+				"S": date.getMilliseconds() //毫秒   
+			};
+			if(/(y+)/.test(fmt))
+				fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+			for(var k in o)
+				if(new RegExp("(" + k + ")").test(fmt))
+					fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+			return fmt;
+		}
+		function time() {
+			var myDate = new Date(); //获取系统当前时间
+			//alert(myDate);
+			var a = $("#nowtime").val();
+			console.log(a);
+			//alert(a);
+			//dateFtt("yyyy-MM-dd hh:mm:ss",myDate);//直接调用公共JS里面的时间类处理的办法     
+			//alert(dateFtt("yyyy-MM-dd hh:mm:ss", myDate));
+			$("#nowtime").val(dateFtt("yyyy-MM-dd hh:mm:ss", myDate));
+		}
+</script>
+ <style>
+ #Time,#p{
+ font-size: 20px;
+ text-align: center;
+ }
+ #Content,#p{
+ font-size: 30px;
+ 
+ }
+  
+ </style>
+ 
+ 
+</head>
+<body>
+</br></br>
+<div style="margin:0 auto;width: 860px; height: 450px; border: solid 0px #808080; padding=18px; font-size:small;line-height=35px;text-indent:4em;font-family:微软雅黑">
+		<p id="Content"></p>
+		<p id="Time"></p>
+		
+</div>
+</body>
+<script> 
+//1000毫秒调用一次
+//window.setInterval("countDown()",1000);
+
+</script>
+</html>
